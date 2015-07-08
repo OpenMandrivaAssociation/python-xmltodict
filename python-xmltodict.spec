@@ -83,7 +83,7 @@ Wikipedia.
 %prep
 %setup -q -n %{srcname}-%{version}
 rm -rf %{srcname}.egg-info
-find -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python2}|'
+find -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python}|'
 rm -rf ../%{py3dir}
 cp -a . ../%{py3dir}
 mv ../%{py3dir} .
