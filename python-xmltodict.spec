@@ -3,7 +3,7 @@
 
 Name:               python-xmltodict
 Version:            0.9.2
-Release:            1
+Release:            2
 Summary:            Makes working with XML feel like you are working with JSON
 
 Group:              Development/Python
@@ -14,10 +14,12 @@ Source0:            http://pypi.python.org/packages/source/x/%{srcname}/%{srcnam
 BuildArch:          noarch
 
 BuildRequires:      pkgconfig(python2)
-BuildRequires:      python-nose
+BuildRequires:      python2-nose
 
 BuildRequires:      pkgconfig(python3)
 BuildRequires:      python3-nose
+
+%rename		    python3-xmltodict
 
 %description
 xmltodict is a Python module that makes working with XML feel like you are
@@ -47,13 +49,13 @@ Wikipedia.
     u'element as well'
 
 
-%package -n python3-xmltodict
+%package -n python2-xmltodict
 Summary:            Makes working with XML feel like you are working with JSON
 Group:              Development/Python
 
-Requires:           python3
+Requires:           python2
 
-%description -n python3-xmltodict
+%description -n python2-xmltodict
 xmltodict is a Python module that makes working with XML feel like you are
 working with JSON.  It's very fast (Expat-based) and has a streaming mode
 with a small memory footprint, suitable for big XML dumps like Discogs or
@@ -90,7 +92,7 @@ mv ../%{py3dir} .
 find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
 
 %build
-%{__python} setup.py build
+%{__python2} setup.py build
 pushd %{py3dir}
 %{__python3} setup.py build
 popd
@@ -99,21 +101,21 @@ popd
 pushd %{py3dir}
 %{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
 popd
-%{__python} setup.py install -O1 --skip-build --root=%{buildroot}
+%{__python2} setup.py install -O1 --skip-build --root=%{buildroot}
 
 %check
-nosetests-%{py_ver}
+nosetests-%{py2_ver}
 pushd %{py3dir}
 nosetests-%{py3_ver}
 popd
 
 %files
 %doc README.md LICENSE PKG-INFO
-%{python_sitelib}/%{srcname}.py*
-%{python_sitelib}/%{srcname}-%{version}*
+%{python3_sitelib}/%{srcname}.py*
+%{python3_sitelib}/%{srcname}-%{version}*
 
-%files -n python3-xmltodict
+%files -n python2-xmltodict
 %doc README.md LICENSE PKG-INFO
-%{python3_sitelib}/%{srcname}.py
-%{python3_sitelib}/%{srcname}-%{version}-*
+%{python2_sitelib}/%{srcname}.py
+%{python2_sitelib}/%{srcname}-%{version}-*
 
