@@ -2,8 +2,8 @@
 %define py3dir python3
 
 Name:               python-xmltodict
-Version:            0.9.2
-Release:            2
+Version:            0.12.0
+Release:            1
 Summary:            Makes working with XML feel like you are working with JSON
 
 Group:              Development/Python
