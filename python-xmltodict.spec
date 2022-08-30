@@ -109,7 +109,6 @@ popd
 %doc README.md LICENSE PKG-INFO
 %{python3_sitelib}/%{srcname}.py*
 %{python3_sitelib}/%{srcname}-%{version}*
-%{python3_sitelib}/__pycache__/xmltodict.cpython-*
 
 %files -n python2-xmltodict
 %doc README.md LICENSE PKG-INFO
