@@ -105,12 +105,6 @@ pushd %{py3dir}
 popd
 %{__python2} setup.py install -O1 --skip-build --root=%{buildroot}
 
-%check
-nosetests-%{py2_ver}
-pushd %{py3dir}
-nosetests-%{py3_ver}
-popd
-
 %files
 %doc README.md LICENSE PKG-INFO
 %{python3_sitelib}/%{srcname}.py*
