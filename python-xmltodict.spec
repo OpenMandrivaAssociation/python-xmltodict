@@ -14,9 +14,11 @@ Source0:            http://pypi.python.org/packages/source/x/%{srcname}/%{srcnam
 BuildArch:          noarch
 
 BuildRequires:      pkgconfig(python2)
+BuildRequires:      python2dist(setuptools)
 BuildRequires:      python2-nose
 
 BuildRequires:      pkgconfig(python3)
+BuildRequires:      python3dist(setuptools)
 BuildRequires:      python3-nose
 
 %rename		    python3-xmltodict
