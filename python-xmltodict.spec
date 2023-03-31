@@ -3,7 +3,7 @@
 
 Name:               python-xmltodict
 Version:            0.12.0
-Release:            2
+Release:            3
 Summary:            Makes working with XML feel like you are working with JSON
 
 Group:              Development/Python
