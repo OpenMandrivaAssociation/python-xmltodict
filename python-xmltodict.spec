@@ -1,25 +1,21 @@
-%global srcname xmltodict
-%define py3dir python3
+%global module xmltodict
 
-Name:               python-xmltodict
-Version:            0.12.0
-Release:            3
-Summary:            Makes working with XML feel like you are working with JSON
+Name:		python-xmltodict
+Version:	1.0.2
+Release:	1
+Summary:	Makes working with XML feel like you are working with JSON
+Group:		Development/Python
+License:	MIT
+URL:		https://github.com/martinblech/xmltodict
+Source0:	https://files.pythonhosted.org/packages/source/x/%{module}/%{module}-%{version}.tar.gz
+BuildSystem:	python
+BuildArch:		noarch
 
-Group:              Development/Python
-License:            MIT
-URL:                https://github.com/martinblech/xmltodict
-Source0:            http://pypi.python.org/packages/source/x/%{srcname}/%{srcname}-%{version}.tar.gz
-
-BuildArch:          noarch
-
-BuildRequires:      pkgconfig(python2)
-BuildRequires:      python2dist(setuptools)
-BuildRequires:      python2-nose
-
-BuildRequires:      pkgconfig(python3)
-BuildRequires:      python3dist(setuptools)
-BuildRequires:      python3-nose
+BuildRequires:	pkgconfig
+BuildRequires:	pkgconfig(python)
+BuildRequires:	python%{pyver}dist(pip)
+BuildRequires:	python%{pyver}dist(setuptools)
+BuildRequires:	python%{pyver}dist(wheel)
 
 %rename		    python3-xmltodict
 
@@ -51,69 +47,21 @@ Wikipedia.
     u'element as well'
 
 
-%package -n python2-xmltodict
-Summary:            Makes working with XML feel like you are working with JSON
-Group:              Development/Python
-
-Requires:           python2
-
-%description -n python2-xmltodict
-xmltodict is a Python module that makes working with XML feel like you are
-working with JSON.  It's very fast (Expat-based) and has a streaming mode
-with a small memory footprint, suitable for big XML dumps like Discogs or
-Wikipedia.
-
-    >>> doc = xmltodict.parse("""
-    ... <mydocument has="an attribute">
-    ...   <and>
-    ...     <many>elements</many>
-    ...     <many>more elements</many>
-    ...   </and>
-    ...   <plus a="complex">
-    ...     element as well
-    ...   </plus>
-    ... </mydocument>
-    ... """)
-    >>>
-    >>> doc['mydocument']['@has']
-    u'an attribute'
-    >>> doc['mydocument']['and']['many']
-    [u'elements', u'more elements']
-    >>> doc['mydocument']['plus']['@a']
-    u'complex'
-    >>> doc['mydocument']['plus']['#text']
-    u'element as well'
-
 %prep
-%setup -q -n %{srcname}-%{version}
-rm -rf %{srcname}.egg-info
-find -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python2}|'
-rm -rf ../%{py3dir}
-cp -a . ../%{py3dir}
-mv ../%{py3dir} .
-find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
+%autosetup -n %{module}-%{version} -p1
+rm -rf %{module}.egg-info
+
+find . -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python}|'
 
 %build
-%{__python2} setup.py build
-pushd %{py3dir}
-%{__python3} setup.py build
-popd
+%py_build
 
 %install
-pushd %{py3dir}
-%{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
-popd
-%{__python2} setup.py install -O1 --skip-build --root=%{buildroot}
+%py_install
 
 %files
-%doc README.md LICENSE PKG-INFO
-%{python3_sitelib}/%{srcname}.py*
-%{python3_sitelib}/%{srcname}-%{version}*
-
-%files -n python2-xmltodict
-%doc README.md LICENSE PKG-INFO
-%{python2_sitelib}/%{srcname}.py
-%{python2_sitelib}/%{srcname}-%{version}-*
-%{python2_sitelib}/xmltodict.pyc
-%{python2_sitelib}/xmltodict.pyo
-
+%doc README.md
+%license LICENSE
+%{python_sitelib}/__pycache__/xmltodict.*.py*
+%{python_sitelib}/%{module}.py
+%{python_sitelib}/%{module}-%{version}.dist-info
