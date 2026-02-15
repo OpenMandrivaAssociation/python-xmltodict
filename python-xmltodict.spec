@@ -1,13 +1,14 @@
-%global module xmltodict
+%define module xmltodict
+%bcond tests 1
 
 Name:		python-xmltodict
-Version:	1.0.2
+Version:	1.0.3
 Release:	1
 Summary:	Makes working with XML feel like you are working with JSON
 Group:		Development/Python
 License:	MIT
 URL:		https://github.com/martinblech/xmltodict
-Source0:	https://files.pythonhosted.org/packages/source/x/%{module}/%{module}-%{version}.tar.gz
+Source0:	https://files.pythonhosted.org/packages/source/x/%{module}/%{module}-%{version}.tar.gz#/%{name}-%{version}.tar.gz
 BuildSystem:	python
 BuildArch:		noarch
 
@@ -16,8 +17,11 @@ BuildRequires:	pkgconfig(python)
 BuildRequires:	python%{pyver}dist(pip)
 BuildRequires:	python%{pyver}dist(setuptools)
 BuildRequires:	python%{pyver}dist(wheel)
+%if %{with tests}
+BuildRequires:	python%{pyver}dist(pytest)
+%endif
 
-%rename		    python3-xmltodict
+%rename python3-xmltodict
 
 %description
 xmltodict is a Python module that makes working with XML feel like you are
@@ -46,18 +50,22 @@ Wikipedia.
     >>> doc['mydocument']['plus']['#text']
     u'element as well'
 
-
-%prep
-%autosetup -n %{module}-%{version} -p1
+%prep -a
+# Remove bundled egg-info
 rm -rf %{module}.egg-info
+# fix interpreter
+find . -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
+find . -name '*.py' | xargs sed -i '1s|^#!/usr/bin/env python|#!%{__python3}|'
 
-find . -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python}|'
+%install -a
+# set missing executable bit
+chmod +x %{buildroot}%{python_sitelib}/%{module}.py
 
-%build
-%py_build
-
-%install
-%py_install
+%if %{with tests}
+export CI=true
+export PYTHONPATH="%{buildroot}%{python_sitelib}:${PWD}"
+pytest -v tests/
+%endif
 
 %files
 %doc README.md
