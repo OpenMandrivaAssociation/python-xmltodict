@@ -2,7 +2,7 @@
 %bcond tests 1
 
 Name:		python-xmltodict
-Version:	1.0.3
+Version:	1.0.4
 Release:	1
 Summary:	Makes working with XML feel like you are working with JSON
 Group:		Development/Python
@@ -62,6 +62,7 @@ find . -name '*.py' | xargs sed -i '1s|^#!/usr/bin/env python|#!%{__python3}|'
 chmod +x %{buildroot}%{python_sitelib}/%{module}.py
 
 %if %{with tests}
+%check
 export CI=true
 export PYTHONPATH="%{buildroot}%{python_sitelib}:${PWD}"
 pytest -v tests/
