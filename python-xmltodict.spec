@@ -3,7 +3,7 @@
 
 Name:		python-xmltodict
 Version:	1.0.4
-Release:	1
+Release:	2
 Summary:	Makes working with XML feel like you are working with JSON
 Group:		Development/Python
 License:	MIT
@@ -13,7 +13,7 @@ BuildSystem:	python
 BuildArch:		noarch
 
 BuildRequires:	pkgconfig
-BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(python3)
 BuildRequires:	python%{pyver}dist(pip)
 BuildRequires:	python%{pyver}dist(setuptools)
 BuildRequires:	python%{pyver}dist(wheel)
